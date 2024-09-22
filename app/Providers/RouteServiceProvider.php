@@ -15,6 +15,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
 
+    protected $namespace = 'App\\Http\\Controllers';
+
     /**
      * Register the application's route middleware.
      *
@@ -32,3 +34,4 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 }
+

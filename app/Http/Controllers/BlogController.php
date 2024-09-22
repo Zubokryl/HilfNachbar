@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function blog() {
-        return 'You have passed the autherisation';
+    public function post() {
+        return 'Post your first blogs here';
     }
 }
