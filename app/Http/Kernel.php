@@ -12,7 +12,12 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \App\Http\Middleware\CorsMiddleware::class,
+        \App\Http\Middleware\CorsMiddleware::class, // Ваш кастомный CORS middleware
+        
+        \Illuminate\Http\Middleware\TrustHosts::class, // Доверие к хостам
+        \Illuminate\Http\Middleware\TrustProxies::class, // Обработка доверенных прокси-серверов
+        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class, // Проверка размера POST-запросов
+         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class, // Преобразование пустых строк в null
     ];
 
     /**
@@ -26,6 +31,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, // Добавляем здесь
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],

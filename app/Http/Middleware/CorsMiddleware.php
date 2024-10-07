@@ -17,22 +17,30 @@ class CorsMiddleware
     {
         $response = $next($request);
 
-        // Проверяем, что это объект ответа, чтобы безопасно добавить заголовки
+        // Check if the response is an instance of Response
         if ($response instanceof Response) {
-            // Добавляем заголовки для CORS
-            $response->headers->set('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
-            $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            $this->setCorsHeaders($response);
         }
 
-        // Обработка preflight-запроса
+        // Handle preflight request
         if ($request->getMethod() === 'OPTIONS') {
             $response = response()->json('OK', 200);
-            $response->headers->set('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
-            $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            $this->setCorsHeaders($response);
         }
 
         return $response;
+    }
+
+    /**
+     * Set CORS headers.
+     *
+     * @param Response $response
+     */
+    private function setCorsHeaders(Response $response)
+    {
+        $allowedOrigins = env('CORS_ALLOWED_ORIGINS', 'http://127.0.0.1:8000');
+        $response->headers->set('Access-Control-Allow-Origin', $allowedOrigins);
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     }
 }
